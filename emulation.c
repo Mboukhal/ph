@@ -6,7 +6,7 @@
 /*   By: mboukhal <mboukhal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 13:03:09 by mboukhal          #+#    #+#             */
-/*   Updated: 2022/05/15 17:20:03 by mboukhal         ###   ########.fr       */
+/*   Updated: 2022/05/16 21:20:48 by mboukhal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,20 @@ void    start_eating(t_philo *ph)
     print_out(ph, "has taken a fork");
     pthread_mutex_unlock(&(ph->root->fork[ph->l_fork]));
     pthread_mutex_lock(&(ph->root->fork[ph->r_fork]));
-    print_out(ph, "has taken a fork");
+    print_out(ph, "has taken a fork\n");
     pthread_mutex_unlock(&(ph->root->fork[ph->r_fork]));
     ph->meal_nb++;
+}
+
+
+int cout_sleep(t_philo *ph)
+{
+    long long   ctime;
+
+    ctime = now_time();
+    while (1)
+        if (ctime <= ph->root->tt_die)
+            return (EXIT_FAILURE);
 }
 
 void    *thread_action(void *arg)
@@ -54,6 +65,8 @@ void    *thread_action(void *arg)
 
     ph = (t_philo *)arg;
     r = ph->root;
+    // if (ph->id % 2)
+    //     usleep(15000);
     pthread_mutex_lock(&(r->cheak_meal_lock));
     if (ph->meal_nb == r->max_meal)
         return (NULL);
@@ -61,6 +74,7 @@ void    *thread_action(void *arg)
     // while (!(r->die))
     // {
         start_eating(ph);
+        cout_sleep(ph);
         // pthread_mutex_lock(&(r->cheak_meal_lock));
         // printf("|%d|\n", ph->meal_nb);
         // if (ph->meal_nb == r->max_meal)
@@ -73,39 +87,35 @@ void    *thread_action(void *arg)
     return (NULL);
 }
 
-int	emulation(t_rule *rule)
+int exec_thread(t_rule *r, int status)
 {
     int i;
-    // t_philo *philo;
-    // philo = rule->philo;
 
-    rule->start_time = now_time();
     i = -1;
-    while (++i < rule->philo_nb)
+    while (++i < r->philo_nb)
     {
-        if (i % 2)
+        if ((i * status) == 0)
         {
-            if (pthread_create(&(rule->philo[i].tid), NULL,
-                thread_action, &(rule->philo[i])))
+            if (pthread_create(&(r->philo[i].tid), NULL,
+                thread_action, &(r->philo[i])))
             {
                 // clean_exit(rule, i);
                 return(EXIT_FAILURE);
             }
-        }
-        rule->philo[i].last_meal_time = now_time();
-    }
-    i = -1;
-    while (++i < rule->philo_nb)
-    {
-        if (!(i % 2))
-        {
-            if (pthread_create(&(rule->philo[i].tid), NULL, thread_action, &(rule->philo[i])))
-                if (w_error("Thread fail creation !"))
-                    return(EXIT_FAILURE);
-            rule->philo[i].last_meal_time = now_time();
+            r->philo[i].last_meal_time = now_time();
         }
     }
-    clean_exit(rule);
+    return(EXIT_SUCCESS);
+}
 
+int	emulation(t_rule *rule)
+{
+    // t_philo *philo;
+    // philo = rule->philo;
+
+    rule->start_time = now_time();
+    return(exec_thread(rule, 0));
+    return(exec_thread(rule, 1));
+    clean_exit(rule);
     return (EXIT_SUCCESS);
 }

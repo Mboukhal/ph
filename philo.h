@@ -6,7 +6,7 @@
 /*   By: mboukhal <mboukhal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/17 14:01:02 by mboukhal          #+#    #+#             */
-/*   Updated: 2022/05/15 16:55:42 by mboukhal         ###   ########.fr       */
+/*   Updated: 2022/05/17 10:46:36 by mboukhal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@
 
 
 struct s_rules;
-
+//			privet
 typedef struct philo
 {
 	pthread_t		tid;
@@ -42,6 +42,7 @@ typedef struct philo
 
 }			t_philo;
 
+//			public
 typedef struct s_rules
 {
 	int				philo_nb;
@@ -60,6 +61,7 @@ typedef struct s_rules
 
 int			w_error(char *str);
 int			emulation(t_rule *rule);
+int			init_rules(t_rule *rules, char **av, int ac);
 long long	now_time(void);
 
 #endif // !PHILO_H
