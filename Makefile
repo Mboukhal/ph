@@ -6,7 +6,7 @@
 #    By: mboukhal <mboukhal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/17 13:58:58 by mboukhal          #+#    #+#              #
-#    Updated: 2022/05/17 13:19:59 by mboukhal         ###   ########.fr        #
+#    Updated: 2022/05/17 13:28:11 by mboukhal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,6 +16,7 @@ NAME				= philo
 CFILES				= main.c philo_utils.c emulation.c #thread_exec.c
 
 CFLAGS				= -Wall -Wextra -Werror
+FSANI				= -g -fsanitize=address ; echo "\t$(GREEN)fsanitize active$(NC)"
 
 OBJS				= $(CFILES:.c=.o)
 
@@ -52,7 +53,7 @@ re: fclean all
 	@ $(CC) $(CFLAGS) -c $< 
 
 $(NAME):$(OBJS)
-	@ $(CC) $(CFLAGS) -lpthread -o $(NAME) $(OBJS) -g -fsanitize=address
+	@ $(CC) $(CFLAGS) -lpthread -o $(NAME) $(OBJS) $(FSANI)
 	@ $(ECHO_ALL)
 	
 all: $(NAME) clean
