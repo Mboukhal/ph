@@ -6,7 +6,7 @@
 #    By: mboukhal <mboukhal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/17 13:58:58 by mboukhal          #+#    #+#              #
-#    Updated: 2022/05/16 20:46:40 by mboukhal         ###   ########.fr        #
+#    Updated: 2022/05/17 13:19:59 by mboukhal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,13 +25,12 @@ OBJS				= $(CFILES:.c=.o)
 RED 				=\033[0;31m # Red
 GREEN 				=\033[0;32m # Green
 NC					=\033[0m\n$(S) # No Color
-SPACER 				= '_'
-S					=`python -c "print $(SPACER) * 34"`
+S					=----------------------------------
 ECHO_CLEAN			=echo "$(OBJS)" | tr '\n' '\0' | tr ' ' '\n';\
 					echo "\t\t $(RED)CLEAN!$(NC)"
 
 ECHO_ALL			=echo "$(OBJS)" | tr '\n' '\0' | tr ' ' '\n';\
-					 echo " \t\t$(GREEN)Created!$(NC)"| tr '_' '.';\
+					 echo " \t\t$(GREEN)Created!$(NC)"| tr '-' '.';\
 					 echo "$(NAME) \t\t\t$(GREEN)COMPILED!$(NC)"
 
 ECHO_FCLEAN			=echo "\n$(NAME)"; $(ECHO_CLEAN);\
